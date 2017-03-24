@@ -45,8 +45,7 @@ public class MPLineChartManager extends MPBarLineChartManager {
     protected LineChart createViewInstance(ThemedReactContext reactContext) {
         LineChart chart=new LineChart(reactContext);
 
-        // initialise event listener to bind to chart
-        new MPChartSelectionEventListener(chart);
+        setEventListener(chart, reactContext);
 
         return  chart;
     }

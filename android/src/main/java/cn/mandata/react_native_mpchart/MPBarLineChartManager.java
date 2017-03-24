@@ -4,10 +4,10 @@ import android.graphics.Color;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.SoftAssertions;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -44,50 +44,25 @@ public class MPBarLineChartManager extends SimpleViewManager<BarLineChartBase> {
 
     @Override
     protected BarLineChartBase createViewInstance(ThemedReactContext reactContext) {
-        BarChart chart=new BarChart(reactContext);
-         //com.facebook.react.uimanager.ViewGroupManager
-/*        *//**图表具体设置*//*
-        ArrayList<BarEntry> entries = new ArrayList<>();//显示条目
-        ArrayList<String> xVals = new ArrayList<String>();//横坐标标签
-        random=new Random();//随机数
-        for(int i=0;i<12;i++){
-            float profit= random.nextFloat()*1000;
-            //entries.add(BarEntry(float val,int positon);
-            entries.add(new BarEntry(profit,i));
-            xVals.add((i+1)+"月");
-        }
-        dataSet = new BarDataSet(entries, "公司年利润报表");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        data = new BarData(xVals, dataSet);
-        chart.setData(data);
-        //设置Y方向上动画animateY(int time);
-        chart.animateY(3000);
-        //图表描述
-        chart.setDescription("公司前半年财务报表(单位：万元)");*/
-        new MPChartSelectionEventListener(chart);
+      SoftAssertions.assertCondition(
+        false,
+        "MPBarLineChartManager is father class, should not create instance");
 
-        
-        return  chart;
+      return null;
     }
 
+    protected void setEventListener(BarLineChartBase chart, ThemedReactContext reactContext) {
+      new MPChartSelectionEventListener(chart);
+      new MarkerView(chart, reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher()))
 
-/*    //{xLabel:"",yLabel:"",xUnit:"",yUnit:"",xValues:[],yValues:[],unit:"",data:[]}
-    @ReactProp(name = "config")
-    public void setConfig(BarChart chart,ReadableMap data){
-        ReadableArray ra=data.getArray("data");
-        String label=data.getString("label");
+    }
 
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        for(int i=0;i<ra.size();i++){
-            float v=(float)ra.getDouble(i);
-            entries.add(new BarEntry(v,i));
-        }
-        BarDataSet dataSet = new BarDataSet(entries,label);
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        BarData bdata =null;// new BarData(xVals, dataSet);
+    @Override
+    public @Nullable Map getExportedCustomDirectEventTypeConstants() {
+      return MapBuilder.of(
+        DrawerSlideEvent.EVENT_NAME, MapBuilder.of("registrationName", "onMarkerChange")
+    }
 
-        chart.setData(bdata);
-    }*/
     @ReactProp(name="touchEnabled",defaultBoolean = true)
     public void setTouchEnabled(BarLineChartBase chart,boolean enable){
         chart.setTouchEnabled(enable);
