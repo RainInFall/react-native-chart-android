@@ -1,13 +1,19 @@
 package cn.mandata.react_native_mpchart;
 
 import android.graphics.Color;
+import android.util.Log;
+
+import cn.mandata.react_native_mpchart.events.MPMarkerChangeEvent;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.SoftAssertions;
+import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -15,27 +21,21 @@ import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.formatter.XAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by Administrator on 2015/11/6.
  */
 public class MPBarLineChartManager extends SimpleViewManager<BarLineChartBase> {
     private String CLASS_NAME="MPBarLineChart";
-    private Random random;//用于产生随机数
-
-    private BarChart chart;
-    private BarData data;
-    private BarDataSet dataSet;
 
     @Override
     public String getName() {
@@ -51,16 +51,17 @@ public class MPBarLineChartManager extends SimpleViewManager<BarLineChartBase> {
       return null;
     }
 
-    protected void setEventListener(BarLineChartBase chart, ThemedReactContext reactContext) {
+    @Override
+    protected void addEventEmitters(ThemedReactContext reactContext, BarLineChartBase chart) {
       new MPChartSelectionEventListener(chart);
-      new MarkerView(chart, reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher()))
-
+      new MPMarkerView(chart, reactContext);
     }
 
     @Override
     public @Nullable Map getExportedCustomDirectEventTypeConstants() {
       return MapBuilder.of(
-        DrawerSlideEvent.EVENT_NAME, MapBuilder.of("registrationName", "onMarkerChange")
+        MPMarkerChangeEvent.EVENT_NAME, MapBuilder.of("registrationName", "onMarkerChange")
+      );
     }
 
     @ReactProp(name="touchEnabled",defaultBoolean = true)

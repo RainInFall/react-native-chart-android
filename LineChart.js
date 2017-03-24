@@ -6,9 +6,18 @@ class LineChart extends Component {
         super(props);
     }
 
+    _onMarkerChange = (event) => {
+      if (this.props.onMarkerChange) {
+        this.props.onMarkerChange(event);
+      }
+    }
+
     render() {
         return (
-            <MPLineChart {...this.props}/>
+            <MPLineChart
+              {...this.props}
+              onMarkerChange={this._onMarkerChange}
+            />
         );
     }
 }
@@ -45,7 +54,8 @@ LineChart.propTypes = {
     legend:PropTypes.object,
     viewCenter: PropTypes.array,
     zoomTo: PropTypes.object,
-    extraOffsets: PropTypes.string
+    extraOffsets: PropTypes.string,
+    onMarkerChange: PropTypes.func,
 }
 
 var MPLineChart = requireNativeComponent('MPLineChart', LineChart);

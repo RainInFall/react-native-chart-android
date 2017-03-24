@@ -29,7 +29,6 @@ public class MPChartPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
-                new ChartViewManager(),
                 new MPBarChartManager(),
                 new MPHorizontalBarChartManager(),
                 new MPLineChartManager(),

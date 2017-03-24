@@ -1,6 +1,7 @@
 package cn.mandata.react_native_mpchart;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
@@ -24,14 +25,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2015/11/6.
  */
 public class MPLineChartManager extends MPBarLineChartManager {
     private String CLASS_NAME="MPLineChart";
-    private Random random;//用于产生随机数
 
     private LineChart chart;
     private LineData data;
@@ -44,9 +43,7 @@ public class MPLineChartManager extends MPBarLineChartManager {
     @Override
     protected LineChart createViewInstance(ThemedReactContext reactContext) {
         LineChart chart=new LineChart(reactContext);
-
-        setEventListener(chart, reactContext);
-
+        
         return  chart;
     }
 
