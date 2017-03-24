@@ -38,7 +38,7 @@ public class MPMarkerView extends MarkerView {
   @Override
   public int getXOffset(float posX) {
     if (posX != this.posX) {
-      this.posX = xPos;
+      this.posX = posX;
       dispatch();
     }
     return 0;
@@ -47,7 +47,7 @@ public class MPMarkerView extends MarkerView {
   @Override
   public int getYOffset(float posY) {
     if (posY != this.posX) {
-      this.posY = yPos;
+      this.posY = posY;
       dispatch();
     }
     return 0;
